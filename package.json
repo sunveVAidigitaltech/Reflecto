@@ -1,0 +1,26 @@
+{
+  "name": "reflecto",
+  "version": "1.0.0",
+  "description": "Reflecto: Light & Reflection - Mobile Optics Puzzle Game",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080",
+    "test": "node tests/test-all-levels.js",
+    "cap:sync": "npx @capacitor/cli sync",
+    "android:open": "npx @capacitor/cli open android",
+    "ios:open": "npx @capacitor/cli open ios"
+  },
+  "keywords": [
+    "puzzle",
+    "mobile-game",
+    "optics",
+    "circuit",
+    "spatial",
+    "orbital-physics",
+    "words",
+    "duality"
+  ],
+  "author": "Aetheria Game Studios",
+  "license": "MIT"
+}
