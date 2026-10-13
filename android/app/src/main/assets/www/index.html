@@ -278,6 +278,32 @@
       </div>
     </div>
 
+    <!-- REWARDED AD HINT PROMPT MODAL (+2 FREE HINTS) -->
+    <div class="modal-overlay" id="rewarded-prompt-modal" role="dialog" aria-modal="true" aria-labelledby="rewarded-prompt-title">
+      <div class="reward-card">
+        <div class="reward-icon-bounce">🎁</div>
+        <h2 class="reward-title" id="rewarded-prompt-title">Get +2 Free Hints!</h2>
+        <p class="reward-desc">You're out of hints! Watch a quick video to earn +2 free hints and solve this puzzle!</p>
+        <div class="reward-action-row">
+          <button class="btn-reward-cancel" id="btn-cancel-reward">Maybe Later</button>
+          <button class="btn-reward-watch" id="btn-watch-reward">🎬 Watch Video (+2)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN-BROWSER AD SIMULATOR MODAL (FOR TESTING & PREVIEWS) -->
+    <div class="modal-overlay" id="browser-ad-simulator-modal" role="dialog" aria-modal="true">
+      <div class="simulator-card">
+        <div class="simulator-badge">Google AdMob Test Simulator</div>
+        <div class="simulator-screen">
+          <div class="simulator-play-icon">🎬</div>
+          <h3 id="simulator-title" class="simulator-title">AdMob Video Ad</h3>
+          <p id="simulator-desc" class="simulator-desc">Watching sponsor video...</p>
+          <div class="simulator-timer-pill" id="simulator-timer">Reward in 3s...</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Game Scripts -->
@@ -286,6 +312,7 @@
   <script src="js/levels-data.js"></script>
   <script src="js/story-data.js"></script>
   <script src="js/toybox.js"></script>
+  <script src="js/ads-manager.js"></script>
   <script src="js/engine-optics.js"></script>
   <script src="js/app.js"></script>
 </body>

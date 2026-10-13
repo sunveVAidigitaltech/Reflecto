@@ -86,6 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnReplayChamber = document.getElementById('btn-replay-chamber');
   const btnNextChamber = document.getElementById('btn-next-chamber');
 
+  // Rewarded Ad & Simulator Modals
+  const rewardPromptModal = document.getElementById('rewarded-prompt-modal');
+  const btnWatchReward = document.getElementById('btn-watch-reward');
+  const btnCancelReward = document.getElementById('btn-cancel-reward');
+  const adSimulatorModal = document.getElementById('browser-ad-simulator-modal');
+
   // Game Engine & State
   let opticsEngine = null;
   let currentLevelIdx = 0;
@@ -474,6 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (victoryModal) victoryModal.classList.remove('active');
     if (storyCardModal) storyCardModal.classList.remove('active');
     if (toyboxModal) toyboxModal.classList.remove('active');
+    if (rewardPromptModal) rewardPromptModal.classList.remove('active');
+    if (adSimulatorModal) adSimulatorModal.classList.remove('active');
   }
 
   // Bind UI Events
@@ -535,9 +543,36 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnHint) {
     btnHint.addEventListener('click', () => {
       if (!opticsEngine) return;
+      if (opticsEngine.hintsRemaining <= 0) {
+        if (rewardPromptModal) rewardPromptModal.classList.add('active');
+        if (window.soundFX && window.soundFX.softThud) window.soundFX.softThud();
+        return;
+      }
       const hint = opticsEngine.useHint();
       if (!hint) {
         if (window.soundFX && window.soundFX.softThud) window.soundFX.softThud();
+      }
+    });
+  }
+
+  // Rewarded Video Prompt Buttons
+  if (btnCancelReward) {
+    btnCancelReward.addEventListener('click', () => {
+      if (rewardPromptModal) rewardPromptModal.classList.remove('active');
+    });
+  }
+
+  if (btnWatchReward) {
+    btnWatchReward.addEventListener('click', () => {
+      if (rewardPromptModal) rewardPromptModal.classList.remove('active');
+      if (window.adsManager) {
+        window.adsManager.requestRewardedAdForHints((awarded) => {
+          if (opticsEngine) {
+            opticsEngine.hintsRemaining = (opticsEngine.hintsRemaining || 0) + awarded;
+            handleMoveChange(opticsEngine.moves, opticsEngine.level.parMoves, opticsEngine.hintsRemaining);
+            if (window.soundFX && window.soundFX.starAwardDing) window.soundFX.starAwardDing(2);
+          }
+        });
       }
     });
   }
@@ -583,7 +618,13 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNextChamber.addEventListener('click', () => {
       closeModals();
       const nextIdx = (currentLevelIdx + 1) % opticsEngine.levels.length;
-      loadChamber(nextIdx);
+      if (window.adsManager) {
+        window.adsManager.onLevelWon(() => {
+          loadChamber(nextIdx);
+        });
+      } else {
+        loadChamber(nextIdx);
+      }
     });
   }
 

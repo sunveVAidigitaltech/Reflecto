@@ -1210,6 +1210,171 @@ body {
   box-shadow: 0 0 0 #D97706;
 }
 
+/* ==========================================================================
+   REWARDED AD PROMPT MODAL
+   ========================================================================== */
+.reward-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border: 4px solid #10B981;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  padding: 26px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.reward-icon-bounce {
+  font-size: 3.6rem;
+  margin-bottom: 8px;
+  animation: avatarFloat 2s infinite ease-in-out;
+}
+
+.reward-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #059669;
+  margin-bottom: 8px;
+}
+
+[data-theme="twilight"] .reward-title {
+  color: #34D399;
+}
+
+.reward-desc {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--text-sub);
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+
+.reward-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-reward-cancel {
+  padding: 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  border: 2px solid var(--border-pill);
+  color: var(--text-sub);
+  font-family: var(--font-family-kids);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reward-cancel:hover {
+  background: #E2E8F0;
+}
+
+.btn-reward-watch {
+  padding: 12px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border: none;
+  color: #FFFFFF;
+  font-family: var(--font-family-kids);
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #047857, 0 8px 18px rgba(16, 185, 129, 0.4);
+  transition: all 0.15s ease;
+}
+
+.btn-reward-watch:hover {
+  transform: translateY(-2px);
+}
+.btn-reward-watch:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #047857;
+}
+
+/* ==========================================================================
+   IN-BROWSER AD SIMULATOR MODAL
+   ========================================================================== */
+.simulator-card {
+  width: 100%;
+  max-width: 440px;
+  background: #0F172A;
+  border: 3px solid #38BDF8;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  padding: 24px 18px;
+  text-align: center;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simulator-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #0284C7;
+  color: #FFFFFF;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 16px;
+}
+
+.simulator-screen {
+  background: #1E293B;
+  border-radius: var(--radius-md);
+  border: 2px dashed #475569;
+  width: 100%;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.simulator-play-icon {
+  font-size: 3.2rem;
+  animation: pulsePlay 1.2s infinite ease-in-out;
+}
+
+@keyframes pulsePlay {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.14); }
+}
+
+.simulator-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #38BDF8;
+  margin: 0;
+}
+
+.simulator-desc {
+  font-size: 0.88rem;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.simulator-timer-pill {
+  margin-top: 12px;
+  background: #334155;
+  color: #F8FAFC;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #64748B;
+}
+
 /* Mobile Responsive */
 @media (max-width: 480px) {
   .app-container {
