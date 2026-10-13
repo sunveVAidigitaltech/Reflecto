@@ -39,6 +39,11 @@
         <span class="stat-label">/ 300</span>
       </div>
 
+      <!-- Back to Levels Hub Button (shown in gameplay) -->
+      <button class="btn-back-levels" id="btn-back-to-menu" aria-label="Back to Level Select" title="Back to Levels Hub" style="display: none;">
+        <span class="back-arrow">&larr;</span> Levels
+      </button>
+
       <!-- Level Selector Pill -->
       <button class="level-select-pill" id="btn-open-chapters" aria-label="Choose Level">
         <span id="header-chamber-label">Level 01 / 100</span>
@@ -79,75 +84,148 @@
       </div>
     </header>
 
-    <!-- LEVEL INFO & OBJECTIVES -->
-    <div class="level-subbar">
-      <div class="level-meta">
-        <button class="chapter-badge" id="hud-chapter-badge" title="Tap to read Chapter Story Card">
-          <span id="hud-chapter-badge-text">Chapter 1: Sunny Start</span>
-          <span class="story-book-icon">📖</span>
-        </button>
-        <h1 class="level-title-text" id="hud-chamber-title">First Light</h1>
-      </div>
-      <div class="stats-cluster">
-        <div class="stat-pill moves-pill" id="hud-moves-pill">
-          <span class="stat-label" id="hud-moves-label">Moves</span>
-          <span id="hud-moves" class="stat-value">0</span>
-          <span class="stat-label" id="hud-par-label">/ Par</span>
-          <span id="hud-par" class="stat-value">1</span>
+    <!-- =======================================================================
+         VIEW 1: MAIN MENU & 100-LEVEL BATCH SELECTION HUB
+         ======================================================================= -->
+    <section class="screen-view active" id="view-level-select">
+      <!-- Hero Welcome Banner -->
+      <div class="menu-hero-card">
+        <div class="menu-hero-left">
+          <div class="menu-hero-badge">🌟 Ready to sparkle?</div>
+          <h1 class="menu-hero-title">Reflecto Puzzles</h1>
+          <p class="menu-hero-sub">Solve each puzzle chamber to unlock the next level and collect all 300 stars!</p>
         </div>
-        <div class="stat-pill stars-pill">
-          <span id="hud-stars" class="stat-value stars">⭐⭐⭐</span>
+        <button class="btn-menu-continue" id="btn-menu-continue" title="Resume your puzzle journey">
+          <span class="btn-play-icon">▶</span>
+          <span class="btn-play-label">Play Level <span id="menu-continue-lvl">1</span></span>
+        </button>
+      </div>
+
+      <!-- Batch Filter & Series Tabs -->
+      <div class="batch-series-section">
+        <div class="batch-section-header">
+          <div class="batch-section-title">
+            <span>📚</span> Level Series
+          </div>
+          <button class="btn-unlock-all" id="btn-unlock-all-menu" title="Teacher / Parent: Unlock All Levels">
+            🔓 Unlock All
+          </button>
+        </div>
+
+        <!-- Quick Filter Preset Pills -->
+        <div class="quick-filter-bar" id="quick-filter-bar">
+          <button class="filter-pill-btn active" data-filter="batch-1-10">1–10 (Sunny)</button>
+          <button class="filter-pill-btn" data-filter="first-20">First 20 (1–20)</button>
+          <button class="filter-pill-btn" data-filter="first-30">First 30 (1–30)</button>
+          <button class="filter-pill-btn" data-filter="all">All 100</button>
+        </div>
+
+        <!-- 10-Level Batch Carousel / Tab Strip -->
+        <div class="batch-tabs-strip" id="batch-tabs-strip">
+          <button class="batch-tab-btn active" data-batch="1">1–10: Sunny Start</button>
+          <button class="batch-tab-btn" data-batch="2">11–20: Wobbly Walls</button>
+          <button class="batch-tab-btn" data-batch="3">21–30: Mirror Maze</button>
+          <button class="batch-tab-btn" data-batch="4">31–40: Double Beams</button>
+          <button class="batch-tab-btn" data-batch="5">41–50: Prism Party</button>
+          <button class="batch-tab-btn" data-batch="6">51–60: Rainbow Sparkle</button>
+          <button class="batch-tab-btn" data-batch="7">61–70: Color Match</button>
+          <button class="batch-tab-btn" data-batch="8">71–80: Color Blend</button>
+          <button class="batch-tab-btn" data-batch="9">81–90: Donut Portals</button>
+          <button class="batch-tab-btn" data-batch="10">91–100: Grand Master</button>
+        </div>
+
+        <!-- Active Batch Progress Banner -->
+        <div class="batch-status-banner" id="batch-status-banner">
+          <div class="batch-status-info">
+            <span class="batch-status-title" id="batch-status-title">Series 1: Sunny Start (Levels 1–10)</span>
+            <span class="batch-status-stats" id="batch-status-stats">Solved: 0/10 • Stars: 0/30 ⭐</span>
+          </div>
+          <div class="batch-progress-bar-track">
+            <div class="batch-progress-bar-fill" id="batch-progress-bar-fill" style="width: 0%;"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- OBJECTIVE HINT BANNER -->
-    <div class="objective-banner" id="hud-objective-banner">
-      <div class="objective-icon">💡</div>
-      <span id="hud-objective-text">Tap a mirror to flip it and bounce the light into the sleepy star!</span>
-    </div>
-
-    <!-- CANVAS PLAY ARENA -->
-    <main class="game-arena-card">
-      <div class="canvas-viewport" id="canvas-container">
-        <canvas id="optics-canvas" width="600" height="600" aria-label="Reflecto Puzzle Board"></canvas>
+      <!-- Batch Levels Grid -->
+      <div class="menu-levels-grid" id="menu-levels-grid">
+        <!-- Rendered dynamically by JavaScript with stars, lock status, par -->
       </div>
-    </main>
+    </section>
 
-    <!-- THUMB-ZONE ACTION CONTROLS -->
-    <footer class="action-deck">
-      <!-- Piece Inspector Bar -->
-      <div class="inspector-chip" id="inspector-bar">
-        <div class="inspector-info">
-          <span class="inspector-emoji" id="inspector-icon">🪞</span>
-          <div class="inspector-text" id="inspector-text"><strong>Bouncy Mirror</strong></div>
+    <!-- =======================================================================
+         VIEW 2: PUZZLE GAMEPLAY ARENA
+         ======================================================================= -->
+    <section class="screen-view" id="view-gameplay" style="display: none;">
+      <!-- LEVEL INFO & OBJECTIVES -->
+      <div class="level-subbar">
+        <div class="level-meta">
+          <button class="chapter-badge" id="hud-chapter-badge" title="Tap to read Chapter Story Card">
+            <span id="hud-chapter-badge-text">Chapter 1: Sunny Start</span>
+            <span class="story-book-icon">📖</span>
+          </button>
+          <h1 class="level-title-text" id="hud-chamber-title">First Light</h1>
         </div>
-        <div class="inspector-hint" id="inspector-hint">Tap any mirror or press Flip!</div>
+        <div class="stats-cluster">
+          <div class="stat-pill moves-pill" id="hud-moves-pill">
+            <span class="stat-label" id="hud-moves-label">Moves</span>
+            <span id="hud-moves" class="stat-value">0</span>
+            <span class="stat-label" id="hud-par-label">/ Par</span>
+            <span id="hud-par" class="stat-value">1</span>
+          </div>
+          <div class="stat-pill stars-pill">
+            <span id="hud-stars" class="stat-value stars">⭐⭐⭐</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Action Buttons Row -->
-      <div class="action-buttons-row">
-        <button class="btn-kid-action btn-undo" id="btn-action-undo" title="Undo (Z)">
-          <span class="btn-icon">↶</span>
-          <span class="btn-label">Undo</span>
-        </button>
-
-        <button class="btn-kid-action btn-flip-main" id="btn-action-rotate" title="Flip Mirror (Space / Tap)">
-          <span class="btn-flip-emoji">🪞</span>
-          <span class="btn-flip-text">Flip Mirror!</span>
-        </button>
-
-        <button class="btn-kid-action btn-hint" id="btn-action-hint" title="Get a Hint (3 free)">
-          <span class="btn-icon">🪄</span>
-          <span class="btn-label" id="hint-btn-label">Hint (3)</span>
-        </button>
-
-        <button class="btn-kid-action btn-reset" id="btn-action-reset" title="Restart Level (R)">
-          <span class="btn-icon">🔄</span>
-          <span class="btn-label">Reset</span>
-        </button>
+      <!-- OBJECTIVE HINT BANNER -->
+      <div class="objective-banner" id="hud-objective-banner">
+        <div class="objective-icon">💡</div>
+        <span id="hud-objective-text">Tap a mirror to flip it and bounce the light into the sleepy star!</span>
       </div>
-    </footer>
+
+      <!-- CANVAS PLAY ARENA -->
+      <main class="game-arena-card">
+        <div class="canvas-viewport" id="canvas-container">
+          <canvas id="optics-canvas" width="600" height="600" aria-label="Reflecto Puzzle Board"></canvas>
+        </div>
+      </main>
+
+      <!-- THUMB-ZONE ACTION CONTROLS -->
+      <footer class="action-deck">
+        <!-- Piece Inspector Bar -->
+        <div class="inspector-chip" id="inspector-bar">
+          <div class="inspector-info">
+            <span class="inspector-emoji" id="inspector-icon">🪞</span>
+            <div class="inspector-text" id="inspector-text"><strong>Bouncy Mirror</strong></div>
+          </div>
+          <div class="inspector-hint" id="inspector-hint">Tap any mirror or press Flip!</div>
+        </div>
+
+        <!-- Action Buttons Row -->
+        <div class="action-buttons-row">
+          <button class="btn-kid-action btn-undo" id="btn-action-undo" title="Undo (Z)">
+            <span class="btn-icon">↶</span>
+            <span class="btn-label">Undo</span>
+          </button>
+
+          <button class="btn-kid-action btn-flip-main" id="btn-action-rotate" title="Flip Mirror (Space / Tap)">
+            <span class="btn-flip-emoji">🪞</span>
+            <span class="btn-flip-text">Flip Mirror!</span>
+          </button>
+
+          <button class="btn-kid-action btn-hint" id="btn-action-hint" title="Get a Hint (3 free)">
+            <span class="btn-icon">🪄</span>
+            <span class="btn-label" id="hint-btn-label">Hint (3)</span>
+          </button>
+
+          <button class="btn-kid-action btn-reset" id="btn-action-reset" title="Restart Level (R)">
+            <span class="btn-icon">🔄</span>
+            <span class="btn-label">Reset</span>
+          </button>
+        </div>
+      </footer>
+    </section>
 
     <!-- 100-LEVEL CHAPTER SELECTOR MODAL -->
     <div class="modal-overlay" id="chapters-modal" role="dialog" aria-modal="true" aria-labelledby="modal-chapters-title">
@@ -272,9 +350,10 @@
         </div>
 
         <div class="victory-action-row">
-          <button class="btn-replay-pill" id="btn-replay-chamber">Replay</button>
+          <button class="btn-replay-pill" id="btn-replay-chamber">🔄 Replay</button>
           <button class="btn-next-pill" id="btn-next-chamber">Next Level &rarr;</button>
         </div>
+        <button class="btn-choose-level-pill" id="btn-menu-chambers">📋 Choose Level</button>
       </div>
     </div>
 

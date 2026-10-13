@@ -311,22 +311,72 @@ class ToyboxController {
     (this.level.splitters || []).forEach(s => {
       const cx = (s.x + 0.5) * cellSize;
       const cy = (s.y + 0.5) * cellSize;
-      const sz = cellSize * 0.36;
+      const sz = cellSize * 0.38;
 
       this.ctx.save();
       this.ctx.translate(cx, cy);
-      this.ctx.fillStyle = '#DDD6FE';
-      this.ctx.strokeStyle = '#8B5CF6';
-      this.ctx.lineWidth = 2.5;
 
+      // Diamond Outer Boundary
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
       this.ctx.lineTo(0, sz);
       this.ctx.lineTo(-sz, 0);
       this.ctx.closePath();
+
+      // High-Contrast Gemstone Gradient Fill
+      const pGrad = this.ctx.createLinearGradient(-sz, -sz, sz, sz);
+      pGrad.addColorStop(0, '#0284C7');
+      pGrad.addColorStop(0.5, '#7C3AED');
+      pGrad.addColorStop(1, '#DB2777');
+      this.ctx.fillStyle = pGrad;
+      this.ctx.shadowColor = 'rgba(124, 58, 237, 0.55)';
+      this.ctx.shadowBlur = 10;
       this.ctx.fill();
+
+      // 3D Specular Highlight Facet
+      this.ctx.shadowColor = 'transparent';
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz);
+      this.ctx.lineTo(sz, 0);
+      this.ctx.lineTo(0, 0);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      // Heavy Border
+      this.ctx.strokeStyle = '#2E1065';
+      this.ctx.lineWidth = 3.5;
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz);
+      this.ctx.lineTo(sz, 0);
+      this.ctx.lineTo(0, sz);
+      this.ctx.lineTo(-sz, 0);
+      this.ctx.closePath();
       this.ctx.stroke();
+
+      // Splitting Diagonal (Dark outline + pure white core)
+      const isSlash = (s.type === '/');
+      const startX = -sz * 0.65;
+      const startY = isSlash ? sz * 0.65 : -sz * 0.65;
+      const endX = sz * 0.65;
+      const endY = isSlash ? -sz * 0.65 : sz * 0.65;
+
+      this.ctx.strokeStyle = '#0F172A';
+      this.ctx.lineWidth = 5;
+      this.ctx.lineCap = 'round';
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+
+      this.ctx.strokeStyle = '#FFFFFF';
+      this.ctx.lineWidth = 3;
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+
       this.ctx.restore();
     });
   }

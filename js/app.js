@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   const btnReplayChamber = document.getElementById('btn-replay-chamber');
   const btnNextChamber = document.getElementById('btn-next-chamber');
+  const btnMenuChambers = document.getElementById('btn-menu-chambers');
 
   // Rewarded Ad & Simulator Modals
   const rewardPromptModal = document.getElementById('rewarded-prompt-modal');
@@ -92,10 +93,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCancelReward = document.getElementById('btn-cancel-reward');
   const adSimulatorModal = document.getElementById('browser-ad-simulator-modal');
 
+  // Screen Views & Main Menu Elements
+  const viewLevelSelect = document.getElementById('view-level-select');
+  const viewGameplay = document.getElementById('view-gameplay');
+  const btnBackToMenu = document.getElementById('btn-back-to-menu');
+  const btnMenuContinue = document.getElementById('btn-menu-continue');
+  const menuContinueLvl = document.getElementById('menu-continue-lvl');
+  const quickFilterButtons = document.querySelectorAll('.filter-pill-btn');
+  const batchTabButtons = document.querySelectorAll('.batch-tab-btn');
+  const batchStatusTitle = document.getElementById('batch-status-title');
+  const batchStatusStats = document.getElementById('batch-status-stats');
+  const batchProgressBarFill = document.getElementById('batch-progress-bar-fill');
+  const menuLevelsGrid = document.getElementById('menu-levels-grid');
+  const btnUnlockAllMenu = document.getElementById('btn-unlock-all-menu');
+
   // Game Engine & State
   let opticsEngine = null;
   let currentLevelIdx = 0;
   let activeChapterFilter = 'all';
+  let activeBatchFilter = 'batch-1-10';
   let isUnlockAllMode = localStorage.getItem('reflecto_unlock_all') === 'true';
   let isZenMode = localStorage.getItem('reflecto_zen_mode') === 'true';
   let currentTheme = localStorage.getItem('reflecto_theme') || 'sunny';
@@ -140,15 +156,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getHighestUnlockedLevel() {
-    const saved = localStorage.getItem('reflecto_highest_unlocked');
-    let maxFromStars = 0;
+    if (isUnlockAllMode) return 99;
     const records = getLevelStars();
-    for (const id in records) {
-      const num = parseInt(id, 10);
-      if (!isNaN(num) && num > maxFromStars) maxFromStars = num;
+    let highest = 0;
+    for (let i = 0; i < 99; i++) {
+      if (records[i + 1] && records[i + 1] > 0) {
+        highest = i + 1;
+      } else {
+        break;
+      }
     }
-    const val = saved !== null ? parseInt(saved, 10) : Math.max(0, maxFromStars);
-    return isNaN(val) ? 0 : val;
+    return highest;
+  }
+
+  function getNextLevelToPlay() {
+    const records = getLevelStars();
+    for (let i = 0; i < 100; i++) {
+      if (isLevelUnlocked(i) && (!records[i + 1] || records[i + 1] === 0)) {
+        return i;
+      }
+    }
+    return getHighestUnlockedLevel();
   }
 
   function saveHighestUnlockedLevel(levelId) {
@@ -160,7 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function isLevelUnlocked(idx) {
     if (isUnlockAllMode) return true;
-    return idx <= getHighestUnlockedLevel();
+    if (idx === 0) return true; // Level 1 is always unlocked
+    const records = getLevelStars();
+    // Level N+1 (idx) unlocks strictly when Level N (levelId = idx) has >= 1 star
+    return (records[idx] !== undefined && records[idx] > 0);
   }
 
   // Story Cards Tracking
@@ -228,13 +259,170 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTotalStarsHUD();
     updateAudioIcons();
 
-    // Restore saved level or start at 0
-    const startIdx = Math.min(getSavedLevel(), opticsEngine.levels.length - 1);
-    loadChamber(Math.max(0, startIdx));
+    // Start on Main Menu / Level Selection Hub
+    showLevelSelectView();
+  }
 
-    // Check if story card should open for initial chapter
-    const currentChapter = opticsEngine.levels[currentLevelIdx].chapter || 1;
-    showStoryCard(currentChapter, false);
+  // =========================================================================
+  // SCREEN VIEW NAVIGATION (MAIN MENU vs GAMEPLAY)
+  // =========================================================================
+  function showLevelSelectView() {
+    closeModals();
+    if (viewGameplay) viewGameplay.style.display = 'none';
+    if (viewLevelSelect) viewLevelSelect.style.display = 'flex';
+    if (btnBackToMenu) btnBackToMenu.style.display = 'none';
+    renderBatchLevelsGrid();
+    updateTotalStarsHUD();
+  }
+
+  function showGameplayView(idx) {
+    closeModals();
+    if (viewLevelSelect) viewLevelSelect.style.display = 'none';
+    if (viewGameplay) viewGameplay.style.display = 'flex';
+    if (btnBackToMenu) btnBackToMenu.style.display = 'inline-flex';
+    loadChamber(idx);
+  }
+
+  function getLevelRangeForFilter(filter) {
+    if (filter === 'first-20') return [1, 20];
+    if (filter === 'first-30') return [1, 30];
+    if (filter === 'all') return [1, 100];
+    const match = filter.match(/^batch-(\d+)(?:-(\d+))?$/);
+    if (match) {
+      if (match[2]) {
+        return [parseInt(match[1], 10), parseInt(match[2], 10)];
+      }
+      const bNum = parseInt(match[1], 10);
+      const start = (bNum - 1) * 10 + 1;
+      return [start, Math.min(start + 9, 100)];
+    }
+    return [1, 10];
+  }
+
+  function renderBatchLevelsGrid() {
+    if (!menuLevelsGrid || !opticsEngine) return;
+    menuLevelsGrid.innerHTML = '';
+
+    const records = getLevelStars();
+    const nextToPlay = getNextLevelToPlay();
+
+    if (menuContinueLvl) {
+      menuContinueLvl.textContent = (nextToPlay + 1);
+    }
+
+    if (btnUnlockAllMenu) {
+      btnUnlockAllMenu.textContent = isUnlockAllMode ? '🔒 Normal Mode' : '🔓 Unlock All';
+    }
+    if (btnUnlockAll) {
+      btnUnlockAll.textContent = isUnlockAllMode ? '🔒 Normal Mode' : '🔓 Unlock All';
+    }
+
+    const [startLvl, endLvl] = getLevelRangeForFilter(activeBatchFilter);
+    const levelsInBatch = [];
+    for (let i = startLvl - 1; i <= endLvl - 1 && i < opticsEngine.levels.length; i++) {
+      levelsInBatch.push({ lvl: opticsEngine.levels[i], idx: i });
+    }
+
+    // Batch Status Calculations
+    let solvedCount = 0;
+    let starsEarned = 0;
+    levelsInBatch.forEach(({ lvl }) => {
+      const stars = records[lvl.id] || 0;
+      if (stars > 0) solvedCount++;
+      starsEarned += stars;
+    });
+
+    const totalBatchLevels = levelsInBatch.length;
+    const maxBatchStars = totalBatchLevels * 3;
+
+    if (batchStatusTitle) {
+      if (activeBatchFilter === 'all') {
+        batchStatusTitle.textContent = 'All 100 Levels';
+      } else if (activeBatchFilter === 'first-20') {
+        batchStatusTitle.textContent = 'First 20 Levels (1–20)';
+      } else if (activeBatchFilter === 'first-30') {
+        batchStatusTitle.textContent = 'First 30 Levels (1–30)';
+      } else {
+        const bIdx = Math.floor((startLvl - 1) / 10) + 1;
+        const bNames = [
+          'Sunny Start', 'Wobbly Walls', 'Mirror Maze', 'Double Beams', 'Prism Party',
+          'Rainbow Sparkle', 'Color Match', 'Color Blend', 'Donut Portals', 'Grand Master'
+        ];
+        batchStatusTitle.textContent = `Series ${bIdx}: ${bNames[bIdx - 1] || 'Optics'} (${startLvl}–${endLvl})`;
+      }
+    }
+
+    if (batchStatusStats) {
+      batchStatusStats.textContent = `Solved: ${solvedCount}/${totalBatchLevels} • Stars: ${starsEarned}/${maxBatchStars} ⭐`;
+    }
+
+    if (batchProgressBarFill) {
+      const pct = totalBatchLevels > 0 ? Math.round((solvedCount / totalBatchLevels) * 100) : 0;
+      batchProgressBarFill.style.width = `${pct}%`;
+    }
+
+    // Render Cards
+    levelsInBatch.forEach(({ lvl, idx }) => {
+      const isUnlocked = isLevelUnlocked(idx);
+      const stars = records[lvl.id] || 0;
+      const isCurrent = (idx === nextToPlay && isUnlocked);
+      const isSolved = (stars > 0);
+
+      const card = document.createElement('div');
+      card.className = 'level-card-item';
+      if (!isUnlocked) {
+        card.classList.add('locked');
+      } else if (isSolved) {
+        card.classList.add('solved');
+      } else if (isCurrent) {
+        card.classList.add('current');
+      }
+
+      let starsHtml = '';
+      if (!isUnlocked) {
+        starsHtml = '🔒 Locked';
+      } else if (stars === 3) {
+        starsHtml = '⭐⭐⭐';
+      } else if (stars === 2) {
+        starsHtml = '⭐⭐<span class="empty-star">☆</span>';
+      } else if (stars === 1) {
+        starsHtml = '⭐<span class="empty-star">☆☆</span>';
+      } else {
+        starsHtml = '<span class="empty-star">☆☆☆</span>';
+      }
+
+      let statusBadgeHtml = '';
+      if (!isUnlocked) {
+        statusBadgeHtml = '<span class="level-card-status-badge">🔒</span>';
+      } else if (isSolved) {
+        statusBadgeHtml = `<span class="level-card-status-badge">✓ ${stars}★</span>`;
+      } else if (isCurrent) {
+        statusBadgeHtml = '<span class="level-card-status-badge">▶ Play</span>';
+      } else {
+        statusBadgeHtml = '<span class="level-card-status-badge">Open</span>';
+      }
+
+      card.innerHTML = `
+        <div class="level-card-header">
+          <span class="level-card-num">${lvl.id}</span>
+          ${statusBadgeHtml}
+        </div>
+        <div class="level-card-title">${lvl.title || `Level ${lvl.id}`}</div>
+        <div class="level-card-stars">${starsHtml}</div>
+        <div class="level-card-par">Par: ${lvl.parMoves}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        if (!isUnlocked) {
+          if (window.soundFX && window.soundFX.softThud) window.soundFX.softThud();
+          alert(`Level ${lvl.id} is locked! Complete Level ${lvl.id - 1} first.`);
+        } else {
+          showGameplayView(idx);
+        }
+      });
+
+      menuLevelsGrid.appendChild(card);
+    });
   }
 
   // Theme Management
@@ -485,9 +673,54 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Bind UI Events
-  if (btnOpenChapters) btnOpenChapters.addEventListener('click', openChaptersModal);
+  if (btnBackToMenu) btnBackToMenu.addEventListener('click', showLevelSelectView);
+  if (btnOpenChapters) btnOpenChapters.addEventListener('click', showLevelSelectView);
   if (btnCloseChaptersModal) btnCloseChaptersModal.addEventListener('click', closeModals);
   if (btnCloseStory) btnCloseStory.addEventListener('click', closeModals);
+
+  // Main Menu Continue Button
+  if (btnMenuContinue) {
+    btnMenuContinue.addEventListener('click', () => {
+      const nextIdx = getNextLevelToPlay();
+      showGameplayView(nextIdx);
+    });
+  }
+
+  // Quick Filter Preset Buttons (All 100, First 20, First 30)
+  quickFilterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      quickFilterButtons.forEach(b => b.classList.remove('active'));
+      batchTabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeBatchFilter = btn.getAttribute('data-filter');
+      renderBatchLevelsGrid();
+      if (window.soundFX && window.soundFX.rotateClick) window.soundFX.rotateClick();
+    });
+  });
+
+  // Batch Series Tab Buttons (1–10, 11–20, ..., 91–100)
+  batchTabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      batchTabButtons.forEach(b => b.classList.remove('active'));
+      quickFilterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const bNum = btn.getAttribute('data-batch');
+      activeBatchFilter = `batch-${bNum}`;
+      renderBatchLevelsGrid();
+      if (window.soundFX && window.soundFX.rotateClick) window.soundFX.rotateClick();
+    });
+  });
+
+  // Unlock All Levels Toggle Buttons
+  if (btnUnlockAllMenu) {
+    btnUnlockAllMenu.addEventListener('click', () => {
+      isUnlockAllMode = !isUnlockAllMode;
+      localStorage.setItem('reflecto_unlock_all', isUnlockAllMode.toString());
+      renderBatchLevelsGrid();
+      renderChamberMap();
+      if (window.soundFX && window.soundFX.candyPop) window.soundFX.candyPop();
+    });
+  }
 
   // Chapter Badge Click: Opens Story Card anytime
   if (hudChapterBadge) {
@@ -502,17 +735,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnToggleTheme) btnToggleTheme.addEventListener('click', toggleTheme);
   if (btnToggleZen) btnToggleZen.addEventListener('click', toggleZenMode);
 
-  // Unlock All Levels Toggle Button
+  // Unlock All Levels Toggle Buttons
   if (btnUnlockAll) {
     btnUnlockAll.addEventListener('click', () => {
       isUnlockAllMode = !isUnlockAllMode;
       localStorage.setItem('reflecto_unlock_all', isUnlockAllMode.toString());
+      renderBatchLevelsGrid();
       renderChamberMap();
       if (window.soundFX && window.soundFX.candyPop) window.soundFX.candyPop();
     });
   }
 
-  // Chapter Filter Tabs
+  // Chapter Filter Tabs (in quick modal if opened)
   chapterFilterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       chapterFilterTabs.forEach(t => t.classList.remove('active'));
@@ -617,14 +851,25 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnNextChamber) {
     btnNextChamber.addEventListener('click', () => {
       closeModals();
-      const nextIdx = (currentLevelIdx + 1) % opticsEngine.levels.length;
+      const nextIdx = currentLevelIdx + 1;
+      if (nextIdx >= opticsEngine.levels.length) {
+        showLevelSelectView();
+        return;
+      }
       if (window.adsManager) {
         window.adsManager.onLevelWon(() => {
-          loadChamber(nextIdx);
+          showGameplayView(nextIdx);
         });
       } else {
-        loadChamber(nextIdx);
+        showGameplayView(nextIdx);
       }
+    });
+  }
+
+  if (btnMenuChambers) {
+    btnMenuChambers.addEventListener('click', () => {
+      closeModals();
+      showLevelSelectView();
     });
   }
 

@@ -580,11 +580,12 @@ class OpticsEngine {
     this.level.splitters.forEach(s => {
       const cx = (s.x + 0.5) * cellSize;
       const cy = (s.y + 0.5) * cellSize;
-      const sz = cellSize * 0.36;
+      const sz = cellSize * 0.38;
 
       this.ctx.save();
       this.ctx.translate(cx, cy);
 
+      // 1. Diamond Outer Boundary
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
@@ -592,32 +593,77 @@ class OpticsEngine {
       this.ctx.lineTo(-sz, 0);
       this.ctx.closePath();
 
+      // 2. High-Contrast Gemstone Gradient Fill
       const pGrad = this.ctx.createLinearGradient(-sz, -sz, sz, sz);
-      pGrad.addColorStop(0, '#BAE6FD');
-      pGrad.addColorStop(0.5, '#DDD6FE');
-      pGrad.addColorStop(1, '#FBCFE8');
+      pGrad.addColorStop(0, '#0284C7');    // Vivid Cyan Blue
+      pGrad.addColorStop(0.5, '#7C3AED');  // Deep Amethyst Violet
+      pGrad.addColorStop(1, '#DB2777');    // Rich Gem Magenta
       this.ctx.fillStyle = pGrad;
-      this.ctx.shadowColor = 'rgba(168, 85, 247, 0.35)';
-      this.ctx.shadowBlur = 8;
+      this.ctx.shadowColor = 'rgba(124, 58, 237, 0.55)';
+      this.ctx.shadowBlur = 12;
       this.ctx.fill();
 
+      // 3. 3D Crystal Specular Facets (High Contrast Highlights)
       this.ctx.shadowColor = 'transparent';
-      this.ctx.strokeStyle = '#8B5CF6';
-      this.ctx.lineWidth = 2.5;
+
+      // Top-Right Facet
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz);
+      this.ctx.lineTo(sz, 0);
+      this.ctx.lineTo(0, 0);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      // Bottom-Left Facet
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, sz);
+      this.ctx.lineTo(-sz, 0);
+      this.ctx.lineTo(0, 0);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      // 4. Heavy High-Contrast Outer Border
+      this.ctx.strokeStyle = '#2E1065';
+      this.ctx.lineWidth = 3.5;
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz);
+      this.ctx.lineTo(sz, 0);
+      this.ctx.lineTo(0, sz);
+      this.ctx.lineTo(-sz, 0);
+      this.ctx.closePath();
       this.ctx.stroke();
 
+      // 5. Central Splitting Mirror Diagonal (Dark Backing + Pure White Core)
       const isSlash = (s.type === '/');
-      this.ctx.strokeStyle = '#FFFFFF';
-      this.ctx.lineWidth = 3;
+      const startX = isSlash ? -sz * 0.65 : -sz * 0.65;
+      const startY = isSlash ? sz * 0.65 : -sz * 0.65;
+      const endX = isSlash ? sz * 0.65 : sz * 0.65;
+      const endY = isSlash ? -sz * 0.65 : sz * 0.65;
+
+      // Dark Backing Line for 100% contrast on any beam/background
+      this.ctx.strokeStyle = '#0F172A';
+      this.ctx.lineWidth = 5.5;
+      this.ctx.lineCap = 'round';
       this.ctx.beginPath();
-      if (isSlash) {
-        this.ctx.moveTo(-sz * 0.6, sz * 0.6);
-        this.ctx.lineTo(sz * 0.6, -sz * 0.6);
-      } else {
-        this.ctx.moveTo(-sz * 0.6, -sz * 0.6);
-        this.ctx.lineTo(sz * 0.6, sz * 0.6);
-      }
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
       this.ctx.stroke();
+
+      // Crisp White Mirror Reflection Line
+      this.ctx.strokeStyle = '#FFFFFF';
+      this.ctx.lineWidth = 3.2;
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+
+      // Corner Sparkle
+      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.beginPath();
+      this.ctx.arc(0, -sz * 0.65, 2.5, 0, Math.PI * 2);
+      this.ctx.fill();
 
       this.ctx.restore();
     });
