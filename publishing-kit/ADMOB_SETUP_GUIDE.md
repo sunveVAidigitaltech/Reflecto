@@ -16,25 +16,24 @@ Log in to [Google AdMob Console](https://admob.google.com/) and create:
    - **Rewarded Ad Unit**: Format: *Rewarded*
 
 You will receive 4 IDs:
-| Name | Format Pattern | Example |
+| Name | Format Pattern | Configured Production ID |
 | :--- | :--- | :--- |
-| **AdMob App ID** | `ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX` | Contains a tilde (`~`) |
-| **Banner Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | Contains a slash (`/`) |
-| **Interstitial Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | Contains a slash (`/`) |
-| **Rewarded Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | Contains a slash (`/`) |
+| **AdMob App ID** | `ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX` | `ca-app-pub-8892099269596029~4982024978` |
+| **Banner Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | `ca-app-pub-8892099269596029/2721683985` |
+| **Interstitial Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | `ca-app-pub-8892099269596029/3140039276` |
+| **Rewarded Unit ID** | `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX` | `ca-app-pub-8892099269596029/6948703605` |
 
 ---
 
-## 2. Where to Insert Your Production IDs
+## 2. Configured Production IDs
 
 ### File A: `android/app/src/main/AndroidManifest.xml`
-Find line 19–21 and replace the test App ID with your real App ID:
+Lines 19–21:
 
 ```xml
-<!-- REPLACE WITH YOUR REAL ADMOB APP ID -->
 <meta-data
     android:name="com.google.android.gms.ads.APPLICATION_ID"
-    android:value="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX"/>
+    android:value="ca-app-pub-8892099269596029~4982024978"/>
 ```
 
 > [!CAUTION]
@@ -43,13 +42,13 @@ Find line 19–21 and replace the test App ID with your real App ID:
 ---
 
 ### File B: `android/app/src/main/java/io/reflecto/game/MainActivity.java`
-Find lines 44–46 and replace the sample Ad Unit IDs with your production IDs:
+Lines 44–46:
 
 ```java
-// REPLACE WITH YOUR REAL ADMOB AD UNIT IDS
-private static final String BANNER_AD_UNIT_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
-private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
-private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX";
+// Production AdMob Ad Unit IDs
+private static final String BANNER_AD_UNIT_ID = "ca-app-pub-8892099269596029/2721683985";
+private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-8892099269596029/3140039276";
+private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-8892099269596029/6948703605";
 ```
 
 ---

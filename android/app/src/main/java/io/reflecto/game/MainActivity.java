@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Reflecto";
 
-    // Google AdMob Official Test Ad Unit IDs
-    private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741";
-    private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
-    private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+    // Google AdMob Production Ad Unit IDs
+    private static final String BANNER_AD_UNIT_ID = "ca-app-pub-8892099269596029/2721683985";
+    private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-8892099269596029/3140039276";
+    private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-8892099269596029/6948703605";
 
     private WebView webView;
     private FrameLayout adContainer;
