@@ -18,5 +18,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Large binaries (optional, keep repo lightweight)
+# Large binaries & signing keys (keep repo lightweight and secure)
 *.apk
+*.aab
+*.jks
+*.keystore
