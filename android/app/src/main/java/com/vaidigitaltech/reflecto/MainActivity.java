@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             // COPPA & Families Policy: Tag for child-directed treatment & G-rating
             RequestConfiguration requestConfig = MobileAds.getRequestConfiguration().toBuilder()
                     .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                    .setTagForUnderAgeOfConsent(RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE)
                     .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
                     .build();
             MobileAds.setRequestConfiguration(requestConfig);
