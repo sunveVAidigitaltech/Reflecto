@@ -124,6 +124,10 @@ body {
   margin-bottom: 10px;
   z-index: 30;
   transition: all 0.3s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-wrap: nowrap;
 }
 
 .brand-badge {
@@ -1086,97 +1090,130 @@ body {
   padding: 10px 8px;
   border-radius: var(--radius-md);
   font-family: var(--font-family-kids);
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   border: 2px solid transparent;
+  user-select: none;
 }
 
-/* Undo Button */
+/* Undo Button - Vibrant Purple, Pure White Bold Text */
 .btn-undo {
-  background: #F3E8FF;
-  border-color: #D8B4FE;
-  color: #7E22CE;
-  box-shadow: 0 3px 0 #C084FC;
+  background: linear-gradient(135deg, #A855F7 0%, #7E22CE 100%);
+  border: 2px solid #D8B4FE;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #581C87, 0 6px 14px rgba(126, 34, 206, 0.35);
 }
 [data-theme="twilight"] .btn-undo {
-  background: #3B2154;
-  border-color: #A855F7;
-  color: #F3E8FF;
-  box-shadow: 0 3px 0 #7E22CE;
+  background: linear-gradient(135deg, #9333EA 0%, #6B21A8 100%);
+  border-color: #E9D5FF;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #3B0764;
 }
 .btn-undo:active {
   transform: translateY(3px);
-  box-shadow: 0 0 0 #C084FC;
+  box-shadow: 0 1px 0 #581C87;
 }
 
-/* Reset Button */
+/* Reset Button - Vivid Rose Red, Pure White Bold Text */
 .btn-reset {
-  background: #FFE4E6;
-  border-color: #FECDD3;
-  color: #BE123C;
-  box-shadow: 0 3px 0 #FDA4AF;
+  background: linear-gradient(135deg, #F43F5E 0%, #BE123C 100%);
+  border: 2px solid #FDA4AF;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #881337, 0 6px 14px rgba(190, 18, 60, 0.35);
 }
 [data-theme="twilight"] .btn-reset {
-  background: #471725;
-  border-color: #FB7185;
-  color: #FFE4E6;
-  box-shadow: 0 3px 0 #BE123C;
+  background: linear-gradient(135deg, #E11D48 0%, #9F1239 100%);
+  border-color: #FECDD3;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #4C0519;
 }
 .btn-reset:active {
   transform: translateY(3px);
-  box-shadow: 0 0 0 #FDA4AF;
+  box-shadow: 0 1px 0 #881337;
 }
 
-/* Hint Button */
+/* Hint Button - Rich Amber Gold, Pure White Bold Text */
 .btn-hint {
-  background: #FEF3C7;
-  border-color: #FCD34D;
-  color: #B45309;
-  box-shadow: 0 3px 0 #F59E0B;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  border: 2px solid #FDE68A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #92400E, 0 6px 14px rgba(217, 119, 6, 0.35);
 }
 [data-theme="twilight"] .btn-hint {
-  background: #3B2A0F;
-  border-color: #F59E0B;
-  color: #FEF3C7;
-  box-shadow: 0 3px 0 #B45309;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  border-color: #FEF08A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 0 #78350F;
 }
 .btn-hint:active {
   transform: translateY(3px);
-  box-shadow: 0 0 0 #F59E0B;
+  box-shadow: 0 1px 0 #92400E;
 }
 
-/* Primary Flip Button */
+/* Primary Flip Button - Electric Cyan Blue */
 .btn-flip-main {
   flex-direction: row;
   gap: 8px;
   background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
-  border: none;
+  border: 2px solid #7DD3FC;
   color: #FFFFFF;
   font-size: 1.05rem;
-  box-shadow: 0 4px 0 #0369A1, 0 8px 18px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 0 #0369A1, 0 8px 18px rgba(56, 189, 248, 0.45);
 }
-
+[data-theme="twilight"] .btn-flip-main {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  border-color: #38BDF8;
+  box-shadow: 0 4px 0 #0C4A6E;
+}
 .btn-flip-main:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 #0369A1;
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #0369A1;
 }
 
 .btn-flip-emoji {
   font-size: 1.3rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
 .btn-flip-text {
   font-weight: 800;
   letter-spacing: 0.02em;
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.btn-action-svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  stroke: #FFFFFF;
+  color: #FFFFFF;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  transition: transform 0.15s ease;
+}
+
+.btn-kid-action:hover .btn-action-svg {
+  transform: scale(1.12);
+}
+
+.btn-kid-action:active .btn-action-svg {
+  transform: scale(0.92);
 }
 
 .btn-icon {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: #FFFFFF !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .btn-label {
-  font-size: 0.72rem;
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #FFFFFF !important;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.02em;
 }
 
 /* ==========================================================================
@@ -1920,47 +1957,145 @@ body {
   border: 1px solid #64748B;
 }
 
-/* Mobile Responsive */
+/* ==========================================================================
+   MOBILE RESPONSIVE & OVERFLOW PREVENTION
+   ========================================================================== */
+
+/* Tablets & Mobile (< 640px) */
+@media (max-width: 640px) {
+  .btn-get-apk {
+    display: none !important;
+  }
+}
+
+/* Medium Mobile (< 580px) */
+@media (max-width: 580px) {
+  .app-container {
+    padding: 6px 10px 16px 10px;
+  }
+  .brand-tagline {
+    display: none !important;
+  }
+  .btn-toybox-pill {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+  .btn-toybox-pill span:last-child {
+    display: none; /* Hide text, keep 🎨 icon */
+  }
+  .header-actions {
+    gap: 3px;
+  }
+  .btn-icon-pill {
+    width: 30px;
+    height: 30px;
+  }
+  .btn-icon-pill svg {
+    width: 14px;
+    height: 14px;
+  }
+  /* In gameplay on mobile, streamline brand and toybox so controls fit flawlessly */
+  .top-header.in-gameplay .brand-badge {
+    display: none !important;
+  }
+  .top-header.in-gameplay .btn-toybox-pill {
+    display: none !important;
+  }
+  .top-header.in-gameplay .level-select-pill {
+    display: none !important;
+  }
+  .btn-back-levels {
+    padding: 5px 10px;
+    font-size: 0.82rem;
+    gap: 4px;
+  }
+}
+
+/* Compact Mobile (< 480px) */
 @media (max-width: 480px) {
   .app-container {
-    padding: 6px 8px 16px 8px;
+    padding: 4px 6px 14px 6px;
   }
   .top-header {
-    padding: 6px 8px;
+    padding: 5px 8px;
     gap: 3px;
   }
   .brand-title-main {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
   .total-stars-pill {
-    padding: 3px 6px;
-    font-size: 0.72rem;
+    padding: 3px 7px;
+    font-size: 0.78rem;
+    gap: 3px;
+  }
+  .total-stars-pill .stat-label {
+    display: none !important; /* Hide '/ 300' so only '⭐ 57' shows */
   }
   .level-select-pill {
     padding: 4px 8px;
     font-size: 0.75rem;
   }
-  .btn-get-apk {
-    display: none;
-  }
-  .btn-toybox-pill {
-    padding: 4px 8px;
-    font-size: 0.74rem;
-  }
   .level-title-text {
     font-size: 1.1rem;
   }
   .action-buttons-row {
-    grid-template-columns: 1fr 2fr 1.1fr 1fr;
+    grid-template-columns: 1fr 2fr 1.15fr 1fr;
     gap: 5px;
   }
   .btn-kid-action {
     padding: 8px 4px;
   }
+  .btn-action-svg {
+    width: 25px;
+    height: 25px;
+  }
+  .btn-label {
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+  .btn-icon {
+    font-size: 1.25rem;
+  }
   .btn-flip-main {
+    font-size: 0.95rem;
+    padding: 8px 6px;
+    gap: 5px;
+  }
+  .btn-flip-text {
     font-size: 0.92rem;
+    font-weight: 900;
   }
   .btn-flip-emoji {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+  }
+}
+
+/* Ultra Compact / Foldable (< 360px) */
+@media (max-width: 360px) {
+  .top-header {
+    padding: 4px 6px;
+    gap: 2px;
+  }
+  .btn-icon-pill {
+    width: 27px;
+    height: 27px;
+  }
+  .btn-icon-pill svg {
+    width: 12px;
+    height: 12px;
+  }
+  .btn-back-levels {
+    padding: 4px 8px;
+    font-size: 0.76rem;
+  }
+  .total-stars-pill {
+    padding: 2px 5px;
+    font-size: 0.72rem;
+  }
+  .btn-label {
+    font-size: 0.74rem;
+  }
+  .btn-flip-text {
+    font-size: 0.85rem;
   }
 }

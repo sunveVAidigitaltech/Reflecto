@@ -324,19 +324,20 @@ class ToyboxController {
       this.ctx.lineTo(-sz, 0);
       this.ctx.closePath();
 
-      // High-Contrast Gemstone Gradient Fill
+      // Dark Neon Blue Gradient Fill
       const pGrad = this.ctx.createLinearGradient(-sz, -sz, sz, sz);
-      pGrad.addColorStop(0, '#0284C7');
-      pGrad.addColorStop(0.5, '#7C3AED');
-      pGrad.addColorStop(1, '#DB2777');
+      pGrad.addColorStop(0, '#00F0FF');
+      pGrad.addColorStop(0.3, '#0077B6');
+      pGrad.addColorStop(0.7, '#052347');
+      pGrad.addColorStop(1, '#020F1F');
       this.ctx.fillStyle = pGrad;
-      this.ctx.shadowColor = 'rgba(124, 58, 237, 0.55)';
-      this.ctx.shadowBlur = 10;
+      this.ctx.shadowColor = 'rgba(0, 240, 255, 0.95)';
+      this.ctx.shadowBlur = 14;
       this.ctx.fill();
 
       // 3D Specular Highlight Facet
       this.ctx.shadowColor = 'transparent';
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+      this.ctx.fillStyle = 'rgba(0, 240, 255, 0.35)';
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
@@ -344,14 +345,34 @@ class ToyboxController {
       this.ctx.closePath();
       this.ctx.fill();
 
-      // Heavy Border
-      this.ctx.strokeStyle = '#2E1065';
-      this.ctx.lineWidth = 3.5;
+      // Bottom-Left Shade
+      this.ctx.fillStyle = 'rgba(0, 10, 25, 0.65)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, sz);
+      this.ctx.lineTo(-sz, 0);
+      this.ctx.lineTo(0, 0);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      // Heavy Dark Border
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 3.2;
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
       this.ctx.lineTo(0, sz);
       this.ctx.lineTo(-sz, 0);
+      this.ctx.closePath();
+      this.ctx.stroke();
+
+      // Inner Neon Cyan accent rim
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 1.5;
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz + 2.5);
+      this.ctx.lineTo(sz - 2.5, 0);
+      this.ctx.lineTo(0, sz - 2.5);
+      this.ctx.lineTo(-sz + 2.5, 0);
       this.ctx.closePath();
       this.ctx.stroke();
 
@@ -362,16 +383,23 @@ class ToyboxController {
       const endX = sz * 0.65;
       const endY = isSlash ? -sz * 0.65 : sz * 0.65;
 
-      this.ctx.strokeStyle = '#0F172A';
-      this.ctx.lineWidth = 5;
+      this.ctx.strokeStyle = '#030712';
+      this.ctx.lineWidth = 5.5;
       this.ctx.lineCap = 'round';
       this.ctx.beginPath();
       this.ctx.moveTo(startX, startY);
       this.ctx.lineTo(endX, endY);
       this.ctx.stroke();
 
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 3.8;
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+
       this.ctx.strokeStyle = '#FFFFFF';
-      this.ctx.lineWidth = 3;
+      this.ctx.lineWidth = 2.0;
       this.ctx.beginPath();
       this.ctx.moveTo(startX, startY);
       this.ctx.lineTo(endX, endY);
@@ -511,20 +539,47 @@ class ToyboxController {
 
       this.ctx.save();
       this.ctx.translate(cx, cy);
-      this.ctx.fillStyle = '#FFFFFF';
-      this.ctx.strokeStyle = '#38BDF8';
-      this.ctx.lineWidth = 2.5;
+
+      // Dark Neon Blue Tile Base
+      const tileGrad = this.ctx.createLinearGradient(-s / 2, -s / 2, s / 2, s / 2);
+      tileGrad.addColorStop(0, '#041733');
+      tileGrad.addColorStop(0.5, '#07254D');
+      tileGrad.addColorStop(1, '#0C3D75');
+      this.ctx.fillStyle = tileGrad;
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 2.8;
       this.ctx.beginPath();
-      this.ctx.roundRect(-s / 2, -s / 2, s, s, 10);
+      this.ctx.roundRect(-s / 2, -s / 2, s, s, 12);
       this.ctx.fill();
+      this.ctx.stroke();
+
+      this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+      this.ctx.lineWidth = 1.2;
+      this.ctx.beginPath();
+      this.ctx.roundRect(-s / 2 + 2.5, -s / 2 + 2.5, s - 5, s - 5, 9);
       this.ctx.stroke();
 
       const isSlash = (m.type === '/');
       this.ctx.rotate(isSlash ? -Math.PI / 4 : Math.PI / 4);
-      this.ctx.fillStyle = '#0284C7';
+
+      // Dark backing line for razor contrast
+      this.ctx.fillStyle = '#030712';
       this.ctx.beginPath();
-      this.ctx.roundRect(-s * 0.4, -3.5, s * 0.8, 7, 3);
+      this.ctx.roundRect(-s * 0.43, -4.5, s * 0.86, 9, 4.5);
       this.ctx.fill();
+
+      // Neon blue reflective blade
+      this.ctx.fillStyle = '#00D2FF';
+      this.ctx.beginPath();
+      this.ctx.roundRect(-s * 0.40, -3, s * 0.80, 6, 3);
+      this.ctx.fill();
+
+      // Pure white reflection specular strip
+      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.beginPath();
+      this.ctx.roundRect(-s * 0.32, -1.2, s * 0.64, 2.4, 1.5);
+      this.ctx.fill();
+
       this.ctx.restore();
     });
   }

@@ -271,6 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (viewGameplay) viewGameplay.style.display = 'none';
     if (viewLevelSelect) viewLevelSelect.style.display = 'flex';
     if (btnBackToMenu) btnBackToMenu.style.display = 'none';
+    if (btnOpenChapters) btnOpenChapters.style.display = 'none';
+    const mainHeader = document.getElementById('main-header');
+    if (mainHeader) mainHeader.classList.remove('in-gameplay');
     renderBatchLevelsGrid();
     updateTotalStarsHUD();
   }
@@ -280,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (viewLevelSelect) viewLevelSelect.style.display = 'none';
     if (viewGameplay) viewGameplay.style.display = 'flex';
     if (btnBackToMenu) btnBackToMenu.style.display = 'inline-flex';
+    if (btnOpenChapters) btnOpenChapters.style.display = 'none';
+    const mainHeader = document.getElementById('main-header');
+    if (mainHeader) mainHeader.classList.add('in-gameplay');
     loadChamber(idx);
   }
 

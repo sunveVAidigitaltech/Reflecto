@@ -593,21 +593,22 @@ class OpticsEngine {
       this.ctx.lineTo(-sz, 0);
       this.ctx.closePath();
 
-      // 2. High-Contrast Gemstone Gradient Fill
+      // 2. High-Contrast Dark Neon Blue Gradient Fill
       const pGrad = this.ctx.createLinearGradient(-sz, -sz, sz, sz);
-      pGrad.addColorStop(0, '#0284C7');    // Vivid Cyan Blue
-      pGrad.addColorStop(0.5, '#7C3AED');  // Deep Amethyst Violet
-      pGrad.addColorStop(1, '#DB2777');    // Rich Gem Magenta
+      pGrad.addColorStop(0, '#00F0FF');    // Electric Neon Cyan Highlight
+      pGrad.addColorStop(0.3, '#0077B6');  // Vivid Neon Blue
+      pGrad.addColorStop(0.7, '#052347');  // Deep Dark Neon Blue
+      pGrad.addColorStop(1, '#020F1F');    // Cosmic Midnight Base
       this.ctx.fillStyle = pGrad;
-      this.ctx.shadowColor = 'rgba(124, 58, 237, 0.55)';
-      this.ctx.shadowBlur = 12;
+      this.ctx.shadowColor = 'rgba(0, 240, 255, 0.95)';
+      this.ctx.shadowBlur = 16;
       this.ctx.fill();
 
       // 3. 3D Crystal Specular Facets (High Contrast Highlights)
       this.ctx.shadowColor = 'transparent';
 
-      // Top-Right Facet
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+      // Top-Right Facet (Glossy Specular Gleam)
+      this.ctx.fillStyle = 'rgba(0, 240, 255, 0.35)';
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
@@ -615,8 +616,8 @@ class OpticsEngine {
       this.ctx.closePath();
       this.ctx.fill();
 
-      // Bottom-Left Facet
-      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      // Bottom-Left Facet (Deep Contrast Shade)
+      this.ctx.fillStyle = 'rgba(0, 10, 25, 0.65)';
       this.ctx.beginPath();
       this.ctx.moveTo(0, sz);
       this.ctx.lineTo(-sz, 0);
@@ -625,8 +626,8 @@ class OpticsEngine {
       this.ctx.fill();
 
       // 4. Heavy High-Contrast Outer Border
-      this.ctx.strokeStyle = '#2E1065';
-      this.ctx.lineWidth = 3.5;
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 3.2;
       this.ctx.beginPath();
       this.ctx.moveTo(0, -sz);
       this.ctx.lineTo(sz, 0);
@@ -635,17 +636,36 @@ class OpticsEngine {
       this.ctx.closePath();
       this.ctx.stroke();
 
+      // Inner Dark Base outline for depth
+      this.ctx.strokeStyle = '#020F1F';
+      this.ctx.lineWidth = 1.2;
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, -sz + 2.5);
+      this.ctx.lineTo(sz - 2.5, 0);
+      this.ctx.lineTo(0, sz - 2.5);
+      this.ctx.lineTo(-sz + 2.5, 0);
+      this.ctx.closePath();
+      this.ctx.stroke();
+
       // 5. Central Splitting Mirror Diagonal (Dark Backing + Pure White Core)
       const isSlash = (s.type === '/');
-      const startX = isSlash ? -sz * 0.65 : -sz * 0.65;
+      const startX = -sz * 0.65;
       const startY = isSlash ? sz * 0.65 : -sz * 0.65;
-      const endX = isSlash ? sz * 0.65 : sz * 0.65;
+      const endX = sz * 0.65;
       const endY = isSlash ? -sz * 0.65 : sz * 0.65;
 
       // Dark Backing Line for 100% contrast on any beam/background
-      this.ctx.strokeStyle = '#0F172A';
-      this.ctx.lineWidth = 5.5;
+      this.ctx.strokeStyle = '#030712';
+      this.ctx.lineWidth = 6.0;
       this.ctx.lineCap = 'round';
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX, startY);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+
+      // Electric Neon Glow Strip
+      this.ctx.strokeStyle = '#00F0FF';
+      this.ctx.lineWidth = 4.0;
       this.ctx.beginPath();
       this.ctx.moveTo(startX, startY);
       this.ctx.lineTo(endX, endY);
@@ -653,7 +673,7 @@ class OpticsEngine {
 
       // Crisp White Mirror Reflection Line
       this.ctx.strokeStyle = '#FFFFFF';
-      this.ctx.lineWidth = 3.2;
+      this.ctx.lineWidth = 2.2;
       this.ctx.beginPath();
       this.ctx.moveTo(startX, startY);
       this.ctx.lineTo(endX, endY);
@@ -662,7 +682,7 @@ class OpticsEngine {
       // Corner Sparkle
       this.ctx.fillStyle = '#FFFFFF';
       this.ctx.beginPath();
-      this.ctx.arc(0, -sz * 0.65, 2.5, 0, Math.PI * 2);
+      this.ctx.arc(0, -sz * 0.65, 3, 0, Math.PI * 2);
       this.ctx.fill();
 
       this.ctx.restore();
@@ -1039,59 +1059,82 @@ class OpticsEngine {
         this.ctx.shadowColor = 'transparent';
       }
 
-      // Candy Mirror Tile Base
-      this.ctx.shadowColor = 'rgba(100, 116, 139, 0.2)';
-      this.ctx.shadowBlur = 6;
+      // Dark Neon Blue Mirror/Prism Tile Base (Replaced white with rich cosmic Dark Neon Blue)
+      this.ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowOffsetY = 3;
 
-      this.ctx.fillStyle = m.locked ? '#E2E8F0' : '#FFFFFF';
+      if (m.locked) {
+        this.ctx.fillStyle = '#1E293B';
+      } else {
+        const tileGrad = this.ctx.createLinearGradient(-s / 2, -s / 2, s / 2, s / 2);
+        tileGrad.addColorStop(0, '#041733');   // Dark Midnight Neon Blue
+        tileGrad.addColorStop(0.5, '#07254D'); // Deep Royal Navy
+        tileGrad.addColorStop(1, '#0C3D75');   // Rich Neon Blue Depth
+        this.ctx.fillStyle = tileGrad;
+      }
       this.roundRect(-s / 2, -s / 2, s, s, 14);
       this.ctx.fill();
 
       this.ctx.shadowColor = 'transparent';
-      this.ctx.strokeStyle = m.locked ? '#94A3B8' : (isSelected ? '#0284C7' : '#BAE6FD');
-      this.ctx.lineWidth = 2.5;
+      // High-contrast glowing border: Neon Cyan when unselected, intense neon glow when selected
+      this.ctx.strokeStyle = m.locked ? '#475569' : (isSelected ? '#00F0FF' : '#00D2FF');
+      this.ctx.lineWidth = isSelected ? 3.5 : 2.8;
+      if (isSelected && !m.locked) {
+        this.ctx.shadowColor = 'rgba(0, 240, 255, 0.95)';
+        this.ctx.shadowBlur = 14;
+      }
       this.roundRect(-s / 2, -s / 2, s, s, 14);
       this.ctx.stroke();
+      this.ctx.shadowColor = 'transparent';
 
-      // Top glossy highlight
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-      this.roundRect(-s / 2 + 3, -s / 2 + 3, s - 6, (s - 6) * 0.35, 8);
-      this.ctx.fill();
+      // Inner Neon Inset Accent
+      if (!m.locked) {
+        this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+        this.ctx.lineWidth = 1.2;
+        this.roundRect(-s / 2 + 3, -s / 2 + 3, s - 6, s - 6, 11);
+        this.ctx.stroke();
+      }
 
       // Smooth Animated Mirror Blade
       this.ctx.save();
       this.ctx.rotate(m.currentAngle);
 
-      // Mirror blade back
-      this.ctx.fillStyle = m.locked ? '#64748B' : '#0284C7';
-      this.roundRect(-s * 0.42, -4, s * 0.84, 8, 4);
+      // Mirror blade dark outline / back for 100% contrast
+      this.ctx.fillStyle = m.locked ? '#334155' : '#000000';
+      this.roundRect(-s * 0.43, -4.5, s * 0.86, 9, 4.5);
       this.ctx.fill();
 
-      // Polished silver glass front
-      this.ctx.fillStyle = '#E0F2FE';
-      this.roundRect(-s * 0.38, -2.5, s * 0.76, 5, 3);
+      // Mirror blade vibrant neon blue body
+      this.ctx.fillStyle = m.locked ? '#64748B' : '#00F0FF';
+      this.roundRect(-s * 0.40, -3, s * 0.80, 6, 3);
       this.ctx.fill();
 
-      // Specular sheen
+      // Pure white specular reflection core
       this.ctx.fillStyle = '#FFFFFF';
-      this.roundRect(-s * 0.30, -1.2, s * 0.60, 2.4, 2);
+      this.roundRect(-s * 0.32, -1.2, s * 0.64, 2.4, 2);
       this.ctx.fill();
 
       this.ctx.restore();
 
       // Lock Emblem for non-movable mirrors
       if (m.locked) {
-        this.ctx.fillStyle = '#64748B';
+        this.ctx.fillStyle = '#94A3B8';
         this.ctx.font = '12px sans-serif';
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.ctx.fillText('🔒', 0, s * 0.28);
       } else {
-        this.ctx.fillStyle = '#93C5FD';
+        // High-contrast Electric Neon Blue Pivot Dots
+        this.ctx.fillStyle = '#00F0FF';
         this.ctx.beginPath();
-        this.ctx.arc(s * 0.32, -s * 0.32, 2.5, 0, Math.PI * 2);
-        this.ctx.arc(-s * 0.32, s * 0.32, 2.5, 0, Math.PI * 2);
+        this.ctx.arc(s * 0.32, -s * 0.32, 3.2, 0, Math.PI * 2);
+        this.ctx.arc(-s * 0.32, s * 0.32, 3.2, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.fillStyle = '#FFFFFF';
+        this.ctx.beginPath();
+        this.ctx.arc(s * 0.32, -s * 0.32, 1.5, 0, Math.PI * 2);
+        this.ctx.arc(-s * 0.32, s * 0.32, 1.5, 0, Math.PI * 2);
         this.ctx.fill();
       }
 
