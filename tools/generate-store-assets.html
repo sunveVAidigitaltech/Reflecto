@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflecto - Store Graphic Asset Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0F172A;
+      --card: #1E293B;
+      --text: #F8FAFC;
+      --accent: #38BDF8;
+      --gold: #F59E0B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Fredoka', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: #38BDF8;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+    p.sub {
+      color: #94A3B8;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: 1100px;
+      width: 100%;
+      align-items: center;
+    }
+    .card {
+      background: var(--card);
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FBBF24;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    canvas {
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #475569;
+    }
+    .btn-download {
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+      color: #FFFFFF;
+      border: 2px solid #38BDF8;
+      padding: 10px 24px;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      transition: all 0.15s ease;
+    }
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+    }
+    .btn-download:active {
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Reflecto - Play Store Graphics Generator</h1>
+  <p class="sub">Pixel-perfect automated HTML5 canvas renderer for Google Play Store icon & banner assets.</p>
+
+  <div class="grid">
+
+    <!-- 1. App Icon (512x512) -->
+    <div class="card">
+      <div class="card-title">
+        <span>⭐</span> Google Play App Icon (512 x 512 px)
+      </div>
+      <canvas id="iconCanvas" width="512" height="512"></canvas>
+      <button class="btn-download" id="downloadIconBtn">📥 Download 512x512 App Icon (.png)</button>
+    </div>
+
+    <!-- 2. Feature Graphic (1024x500) -->
+    <div class="card">
+      <div class="card-title">
+        <span>🎨</span> Google Play Feature Graphic (1024 x 500 px)
+      </div>
+      <canvas id="bannerCanvas" width="1024" height="500"></canvas>
+      <button class="btn-download" id="downloadBannerBtn">📥 Download 1024x500 Feature Graphic (.png)</button>
+    </div>
+
+  </div>
+
+  <script>
+    // -------------------------------------------------------------
+    // RENDER APP ICON (512 x 512)
+    // -------------------------------------------------------------
+    function renderAppIcon() {
+      const cvs = document.getElementById('iconCanvas');
+      const ctx = cvs.getContext('2d');
+      const w = 512, h = 512;
+
+      // 1. Cosmic Deep Navy Gradient Background
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#041733');
+      bg.addColorStop(0.5, '#07254D');
+      bg.addColorStop(1, '#020C1B');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Subtle ambient starlight particles
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      for (let i = 0; i < 40; i++) {
+        const px = (Math.sin(i * 99) * 0.5 + 0.5) * w;
+        const py = (Math.cos(i * 33) * 0.5 + 0.5) * h;
+        const pr = (i % 3) + 1;
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Central Glowing Prism Diamond
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+
+      const sz = 160;
+
+      // Glow backdrop
+      ctx.shadowColor = 'rgba(0, 240, 255, 0.85)';
+      ctx.shadowBlur = 40;
+
+      // Outer diamond shape
+      ctx.beginPath();
+      ctx.moveTo(0, -sz);
+      ctx.lineTo(sz, 0);
+      ctx.lineTo(0, sz);
+      ctx.lineTo(-sz, 0);
+      ctx.closePath();
+
+      const pGrad = ctx.createLinearGradient(-sz, -sz, sz, sz);
+      pGrad.addColorStop(0, '#00F0FF');
+      pGrad.addColorStop(0.3, '#0077B6');
+      pGrad.addColorStop(0.7, '#052347');
+      pGrad.addColorStop(1, '#020F1F');
+      ctx.fillStyle = pGrad;
+      ctx.fill();
+
+      // Outer glowing neon border
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 10;
+      ctx.stroke();
+
+      ctx.shadowColor = 'transparent';
+
+      // Facets
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+      ctx.beginPath();
+      ctx.moveTo(0, -sz);
+      ctx.lineTo(sz, 0);
+      ctx.lineTo(0, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(0, 10, 25, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(0, sz);
+      ctx.lineTo(-sz, 0);
+      ctx.lineTo(0, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // Central Splitting Blade (Dark Backing + Pure White Core)
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 18;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-sz * 0.65, sz * 0.65);
+      ctx.lineTo(sz * 0.65, -sz * 0.65);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      ctx.moveTo(-sz * 0.65, sz * 0.65);
+      ctx.lineTo(sz * 0.65, -sz * 0.65);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(-sz * 0.65, sz * 0.65);
+      ctx.lineTo(sz * 0.65, -sz * 0.65);
+      ctx.stroke();
+
+      // Sparkling Star at the Apex
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(0, -sz * 0.7, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      // Refracted Laser Beams passing through
+      ctx.save();
+      ctx.shadowColor = '#F59E0B';
+      ctx.shadowBlur = 24;
+      ctx.strokeStyle = '#FCD34D';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+
+      // Incoming beam from bottom-left
+      ctx.beginPath();
+      ctx.moveTo(40, h - 40);
+      ctx.lineTo(w / 2, h / 2);
+      ctx.stroke();
+
+      // Outgoing cyan beam to top-right
+      ctx.shadowColor = '#00F0FF';
+      ctx.strokeStyle = '#00F0FF';
+      ctx.beginPath();
+      ctx.moveTo(w / 2, h / 2);
+      ctx.lineTo(w - 40, 50);
+      ctx.stroke();
+
+      // White inner core
+      ctx.shadowColor = 'transparent';
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(40, h - 40);
+      ctx.lineTo(w / 2, h / 2);
+      ctx.lineTo(w - 40, 50);
+      ctx.stroke();
+
+      // Golden Star Badge in Corner
+      ctx.font = '72px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', w - 80, 80);
+
+      ctx.restore();
+    }
+
+    // -------------------------------------------------------------
+    // RENDER FEATURE GRAPHIC (1024 x 500)
+    // -------------------------------------------------------------
+    function renderFeatureGraphic() {
+      const cvs = document.getElementById('bannerCanvas');
+      const ctx = cvs.getContext('2d');
+      const w = 1024, h = 500;
+
+      // 1. Cosmic Gradient Background
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#061A38');
+      bg.addColorStop(0.5, '#0B2956');
+      bg.addColorStop(1, '#020B17');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Light grid pattern
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+      ctx.lineWidth = 1.5;
+      const step = 40;
+      for (let x = 0; x < w; x += step) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += step) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // 2. Left Side: Big Bold Branding
+      ctx.save();
+      ctx.textAlign = 'left';
+
+      // Badge
+      ctx.fillStyle = '#0284C7';
+      ctx.roundRect(80, 75, 260, 36, 18);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 15px "Fredoka", sans-serif';
+      ctx.fillText('🌟 100 PUZZLE LEVELS', 105, 98);
+
+      // Main Title: REFLECTO
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
+      ctx.shadowBlur = 25;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '800 84px "Fredoka", sans-serif';
+      ctx.fillText('REFLECTO', 80, 195);
+
+      // Title Subtitle
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '700 28px "Fredoka", sans-serif';
+      ctx.fillText('LIGHT & MIRROR PUZZLE', 84, 240);
+
+      // Tagline bullets
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '600 18px "Fredoka", sans-serif';
+      ctx.fillText('• 100 Handcrafted Optical Chambers', 84, 290);
+      ctx.fillText('• Prisms, Portals & Cozy Story Cards', 84, 324);
+      ctx.fillText('• 100% Offline • Family & Child Friendly', 84, 358);
+
+      // CTA Pill
+      ctx.fillStyle = '#F59E0B';
+      ctx.shadowColor = 'rgba(245, 158, 11, 0.6)';
+      ctx.shadowBlur = 20;
+      ctx.roundRect(84, 400, 240, 52, 26);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '800 20px "Fredoka", sans-serif';
+      ctx.fillText('▶ PLAY FOR FREE', 118, 433);
+
+      ctx.restore();
+
+      // 3. Right Side: In-Game Puzzle Action Scene
+      ctx.save();
+      const cx = 750, cy = 250;
+
+      // Draw Diamond Prism at center-right
+      const sz = 110;
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      ctx.shadowColor = 'rgba(0, 240, 255, 0.9)';
+      ctx.shadowBlur = 30;
+
+      ctx.beginPath();
+      ctx.moveTo(0, -sz); ctx.lineTo(sz, 0); ctx.lineTo(0, sz); ctx.lineTo(-sz, 0);
+      ctx.closePath();
+      const pGrad = ctx.createLinearGradient(-sz, -sz, sz, sz);
+      pGrad.addColorStop(0, '#00F0FF');
+      pGrad.addColorStop(0.35, '#0077B6');
+      pGrad.addColorStop(0.7, '#042247');
+      pGrad.addColorStop(1, '#020F1F');
+      ctx.fillStyle = pGrad;
+      ctx.fill();
+
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 7;
+      ctx.stroke();
+
+      ctx.shadowColor = 'transparent';
+
+      // Facets
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+      ctx.beginPath(); ctx.moveTo(0, -sz); ctx.lineTo(sz, 0); ctx.lineTo(0, 0); ctx.fill();
+
+      // Splitting Blade
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 14; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+      ctx.strokeStyle = '#00F0FF'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+      ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+
+      ctx.restore();
+
+      // Incoming Laser from Top Right
+      ctx.shadowColor = '#F59E0B'; ctx.shadowBlur = 20;
+      ctx.strokeStyle = '#FCD34D'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(w - 60, 60); ctx.lineTo(cx, cy); ctx.stroke();
+
+      // Refracted Beam 1: Down to bottom mirror
+      ctx.shadowColor = '#00F0FF';
+      ctx.strokeStyle = '#00F0FF'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - 150, cy + 160); ctx.stroke();
+
+      // Refracted Beam 2: Out to Target Star
+      ctx.shadowColor = '#EC4899';
+      ctx.strokeStyle = '#F472B6'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + 170, cy + 130); ctx.stroke();
+
+      // Target Star
+      ctx.shadowColor = 'transparent';
+      ctx.font = '72px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', cx + 170, cy + 130);
+
+      // Star Particles
+      ctx.fillStyle = '#FDE047';
+      for (let p = 0; p < 12; p++) {
+        const ang = (p / 12) * Math.PI * 2;
+        const rad = 50 + Math.sin(p * 5) * 15;
+        ctx.beginPath();
+        ctx.arc(cx + 170 + Math.cos(ang) * rad, cy + 130 + Math.sin(ang) * rad, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    // Initialize Canvas Renders
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAppIcon();
+      renderFeatureGraphic();
+
+      // Download Listeners
+      document.getElementById('downloadIconBtn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'reflecto_app_icon_512x512.png';
+        link.href = document.getElementById('iconCanvas').toDataURL('image/png');
+        link.click();
+      });
+
+      document.getElementById('downloadBannerBtn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'reflecto_feature_graphic_1024x500.png';
+        link.href = document.getElementById('bannerCanvas').toDataURL('image/png');
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html>

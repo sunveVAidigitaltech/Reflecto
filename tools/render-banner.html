@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1024px; height: 500px; overflow: hidden; background: #061A38; font-family: 'Fredoka', sans-serif; }
+    canvas { display: block; width: 1024px; height: 500px; }
+  </style>
+</head>
+<body>
+  <canvas id="cvs" width="1024" height="500"></canvas>
+  <script>
+    document.fonts.ready.then(() => {
+      const cvs = document.getElementById('cvs');
+      const ctx = cvs.getContext('2d');
+      const w = 1024, h = 500;
+
+      // 1. Cosmic Gradient Background
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#061A38');
+      bg.addColorStop(0.5, '#0B2956');
+      bg.addColorStop(1, '#020B17');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Light grid pattern
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+      ctx.lineWidth = 1.5;
+      const step = 40;
+      for (let x = 0; x < w; x += step) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += step) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // 2. Left Side: Big Bold Branding
+      ctx.save();
+      ctx.textAlign = 'left';
+
+      // Badge
+      ctx.fillStyle = '#0284C7';
+      ctx.roundRect(80, 75, 260, 36, 18);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 15px "Fredoka", sans-serif';
+      ctx.fillText('🌟 100 PUZZLE LEVELS', 105, 98);
+
+      // Main Title: REFLECTO
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
+      ctx.shadowBlur = 25;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '800 84px "Fredoka", sans-serif';
+      ctx.fillText('REFLECTO', 80, 195);
+
+      // Title Subtitle
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '700 28px "Fredoka", sans-serif';
+      ctx.fillText('LIGHT & MIRROR PUZZLE', 84, 240);
+
+      // Tagline bullets
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = '600 18px "Fredoka", sans-serif';
+      ctx.fillText('• 100 Handcrafted Optical Chambers', 84, 290);
+      ctx.fillText('• Prisms, Portals & Cozy Story Cards', 84, 324);
+      ctx.fillText('• 100% Offline • Family & Child Friendly', 84, 358);
+
+      // CTA Pill
+      ctx.fillStyle = '#F59E0B';
+      ctx.shadowColor = 'rgba(245, 158, 11, 0.6)';
+      ctx.shadowBlur = 20;
+      ctx.roundRect(84, 400, 240, 52, 26);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '800 20px "Fredoka", sans-serif';
+      ctx.fillText('▶ PLAY FOR FREE', 118, 433);
+
+      ctx.restore();
+
+      // 3. Right Side: In-Game Puzzle Action Scene
+      ctx.save();
+      const cx = 750, cy = 250;
+
+      // Draw Diamond Prism at center-right
+      const sz = 110;
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      ctx.shadowColor = 'rgba(0, 240, 255, 0.9)';
+      ctx.shadowBlur = 30;
+
+      ctx.beginPath();
+      ctx.moveTo(0, -sz); ctx.lineTo(sz, 0); ctx.lineTo(0, sz); ctx.lineTo(-sz, 0);
+      ctx.closePath();
+      const pGrad = ctx.createLinearGradient(-sz, -sz, sz, sz);
+      pGrad.addColorStop(0, '#00F0FF');
+      pGrad.addColorStop(0.35, '#0077B6');
+      pGrad.addColorStop(0.7, '#042247');
+      pGrad.addColorStop(1, '#020F1F');
+      ctx.fillStyle = pGrad;
+      ctx.fill();
+
+      ctx.strokeStyle = '#00F0FF';
+      ctx.lineWidth = 7;
+      ctx.stroke();
+
+      ctx.shadowColor = 'transparent';
+
+      // Facets
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+      ctx.beginPath(); ctx.moveTo(0, -sz); ctx.lineTo(sz, 0); ctx.lineTo(0, 0); ctx.fill();
+
+      // Splitting Blade
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 14; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+      ctx.strokeStyle = '#00F0FF'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+      ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(-sz * 0.65, sz * 0.65); ctx.lineTo(sz * 0.65, -sz * 0.65); ctx.stroke();
+
+      ctx.restore();
+
+      // Incoming Laser from Top Right
+      ctx.shadowColor = '#F59E0B'; ctx.shadowBlur = 20;
+      ctx.strokeStyle = '#FCD34D'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(w - 60, 60); ctx.lineTo(cx, cy); ctx.stroke();
+
+      // Refracted Beam 1: Down to bottom mirror
+      ctx.shadowColor = '#00F0FF';
+      ctx.strokeStyle = '#00F0FF'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - 150, cy + 160); ctx.stroke();
+
+      // Refracted Beam 2: Out to Target Star
+      ctx.shadowColor = '#EC4899';
+      ctx.strokeStyle = '#F472B6'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + 170, cy + 130); ctx.stroke();
+
+      // Target Star
+      ctx.shadowColor = 'transparent';
+      ctx.font = '72px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', cx + 170, cy + 130);
+
+      // Star Particles
+      ctx.fillStyle = '#FDE047';
+      for (let p = 0; p < 12; p++) {
+        const ang = (p / 12) * Math.PI * 2;
+        const rad = 50 + Math.sin(p * 5) * 15;
+        ctx.beginPath();
+        ctx.arc(cx + 170 + Math.cos(ang) * rad, cy + 130 + Math.sin(ang) * rad, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    });
+  </script>
+</body>
+</html>

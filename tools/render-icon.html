@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 512px; height: 512px; overflow: hidden; background: #041733; }
+    canvas { display: block; width: 512px; height: 512px; }
+  </style>
+</head>
+<body>
+  <canvas id="cvs" width="512" height="512"></canvas>
+  <script>
+    const cvs = document.getElementById('cvs');
+    const ctx = cvs.getContext('2d');
+    const w = 512, h = 512;
+
+    // Cosmic Deep Navy Background
+    const bg = ctx.createLinearGradient(0, 0, w, h);
+    bg.addColorStop(0, '#041733');
+    bg.addColorStop(0.5, '#07254D');
+    bg.addColorStop(1, '#020C1B');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Starlight particles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+    for (let i = 0; i < 45; i++) {
+      const px = (Math.sin(i * 99) * 0.5 + 0.5) * w;
+      const py = (Math.cos(i * 33) * 0.5 + 0.5) * h;
+      const pr = (i % 3) + 1.2;
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Central Glowing Prism Diamond
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    const sz = 160;
+
+    ctx.shadowColor = 'rgba(0, 240, 255, 0.95)';
+    ctx.shadowBlur = 40;
+
+    ctx.beginPath();
+    ctx.moveTo(0, -sz);
+    ctx.lineTo(sz, 0);
+    ctx.lineTo(0, sz);
+    ctx.lineTo(-sz, 0);
+    ctx.closePath();
+
+    const pGrad = ctx.createLinearGradient(-sz, -sz, sz, sz);
+    pGrad.addColorStop(0, '#00F0FF');
+    pGrad.addColorStop(0.3, '#0077B6');
+    pGrad.addColorStop(0.7, '#052347');
+    pGrad.addColorStop(1, '#020F1F');
+    ctx.fillStyle = pGrad;
+    ctx.fill();
+
+    ctx.strokeStyle = '#00F0FF';
+    ctx.lineWidth = 10;
+    ctx.stroke();
+
+    ctx.shadowColor = 'transparent';
+
+    // Facets
+    ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+    ctx.beginPath();
+    ctx.moveTo(0, -sz);
+    ctx.lineTo(sz, 0);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(0, 10, 25, 0.7)';
+    ctx.beginPath();
+    ctx.moveTo(0, sz);
+    ctx.lineTo(-sz, 0);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    // Central Splitting Blade (Dark Backing + Pure White Core)
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 18;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-sz * 0.65, sz * 0.65);
+    ctx.lineTo(sz * 0.65, -sz * 0.65);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#00F0FF';
+    ctx.lineWidth = 12;
+    ctx.beginPath();
+    ctx.moveTo(-sz * 0.65, sz * 0.65);
+    ctx.lineTo(sz * 0.65, -sz * 0.65);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(-sz * 0.65, sz * 0.65);
+    ctx.lineTo(sz * 0.65, -sz * 0.65);
+    ctx.stroke();
+
+    // Apex Sparkle
+    ctx.fillStyle = '#FFFFFF';
+    ctx.beginPath();
+    ctx.arc(0, -sz * 0.7, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+
+    // Refracted Laser Beams passing through
+    ctx.save();
+    ctx.shadowColor = '#F59E0B';
+    ctx.shadowBlur = 24;
+    ctx.strokeStyle = '#FCD34D';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+
+    ctx.beginPath();
+    ctx.moveTo(40, h - 40);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.stroke();
+
+    ctx.shadowColor = '#00F0FF';
+    ctx.strokeStyle = '#00F0FF';
+    ctx.beginPath();
+    ctx.moveTo(w / 2, h / 2);
+    ctx.lineTo(w - 40, 50);
+    ctx.stroke();
+
+    ctx.shadowColor = 'transparent';
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(40, h - 40);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(w - 40, 50);
+    ctx.stroke();
+
+    // Golden Star Badge in Corner
+    ctx.font = '72px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('⭐', w - 80, 80);
+
+    ctx.restore();
+  </script>
+</body>
+</html>
