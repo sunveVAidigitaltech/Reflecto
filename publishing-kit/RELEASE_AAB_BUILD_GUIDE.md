@@ -6,25 +6,18 @@ Follow this guide to generate your release signing key and compile the final `.a
 
 ---
 
-## Step 1: Generate Your Release Keystore
+## Step 1: Release Signing Keystore (Generated & Configured)
 
-Run the following command in your terminal to create your private signing keystore file (`reflecto-release-key.jks`):
+The release signing key has been generated and pre-configured for the project:
 
-```bash
-keytool -genkey -v \
-  -keystore reflecto-release-key.jks \
-  -keyalg RSA \
-  -keysize 2048 \
-  -validity 10000 \
-  -alias reflecto-key
-```
-
-* **Keystore password**: Enter a secure password (e.g. at least 8 characters) and remember it.
-* **Certificate questions**: Enter your developer or company details (Name, Organization, Country Code).
-* **Location**: Keep `reflecto-release-key.jks` in a secure location (or place it inside `android/app/`).
+* **Keystore File**: `android/app/reflecto-release-key.jks` (backed up to `/Users/sandeep/Desktop/reflecto-release-key.jks`)
+* **Alias**: `reflecto-key`
+* **Keystore Password**: `ReflectoPlay2026!`
+* **Key Password**: `ReflectoPlay2026!`
+* **Algorithm**: RSA 2048-bit, 10,000 days validity (expires 2054)
 
 > [!CAUTION]
-> **BACK UP YOUR KEYSTORE!** If you lose this keystore file or forget its password, Google will not allow you to release updates to Reflecto under the same Play Store listing unless you use Google Play App Signing with key recovery.
+> **KEEP YOUR KEYSTORE BACKUP SAFE!** A copy has been placed at `/Users/sandeep/Desktop/reflecto-release-key.jks`. Save this file to your secure cloud backup (Google Drive, 1Password, or private storage) as it is required to sign future Play Store updates.
 
 ---
 
