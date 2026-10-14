@@ -93,6 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCancelReward = document.getElementById('btn-cancel-reward');
   const adSimulatorModal = document.getElementById('browser-ad-simulator-modal');
 
+  // Themed Locked Level Modal Elements
+  const lockedLevelModal = document.getElementById('locked-level-modal');
+  const lockedModalTitle = document.getElementById('locked-modal-title');
+  const lockedModalMsg = document.getElementById('locked-modal-msg');
+  const lockedNextLvlNum = document.getElementById('locked-next-lvl-num');
+  const btnCloseLockedModal = document.getElementById('btn-close-locked-modal');
+  const btnLockedPlayNext = document.getElementById('btn-locked-play-next');
+
   // Screen Views & Main Menu Elements
   const viewLevelSelect = document.getElementById('view-level-select');
   const viewGameplay = document.getElementById('view-gameplay');
@@ -305,6 +313,36 @@ document.addEventListener('DOMContentLoaded', () => {
     return [1, 10];
   }
 
+  function showLockedLevelModal(targetLevelId) {
+    const nextToPlay = getNextLevelToPlay();
+    const nextLvlNum = nextToPlay + 1;
+
+    if (lockedModalTitle) {
+      lockedModalTitle.textContent = `Level ${targetLevelId} is Locked!`;
+    }
+    if (lockedModalMsg) {
+      lockedModalMsg.innerHTML = `Complete <strong>Level ${nextLvlNum}</strong> first to unlock this puzzle chamber and discover its light secrets!`;
+    }
+    if (lockedNextLvlNum) {
+      lockedNextLvlNum.textContent = nextLvlNum;
+    }
+
+    if (btnLockedPlayNext) {
+      btnLockedPlayNext.onclick = () => {
+        closeModals();
+        showGameplayView(nextToPlay);
+      };
+    }
+
+    if (lockedLevelModal) {
+      lockedLevelModal.classList.add('active');
+    }
+
+    if (window.soundFX && window.soundFX.softThud) {
+      window.soundFX.softThud();
+    }
+  }
+
   function renderBatchLevelsGrid() {
     if (!menuLevelsGrid || !opticsEngine) return;
     menuLevelsGrid.innerHTML = '';
@@ -420,8 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.addEventListener('click', () => {
         if (!isUnlocked) {
-          if (window.soundFX && window.soundFX.softThud) window.soundFX.softThud();
-          alert(`Level ${lvl.id} is locked! Complete Level ${lvl.id - 1} first.`);
+          card.classList.add('card-wobble');
+          setTimeout(() => card.classList.remove('card-wobble'), 500);
+          showLockedLevelModal(lvl.id);
         } else {
           showGameplayView(idx);
         }
@@ -676,6 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toyboxModal) toyboxModal.classList.remove('active');
     if (rewardPromptModal) rewardPromptModal.classList.remove('active');
     if (adSimulatorModal) adSimulatorModal.classList.remove('active');
+    if (lockedLevelModal) lockedLevelModal.classList.remove('active');
   }
 
   // Bind UI Events
@@ -683,6 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnOpenChapters) btnOpenChapters.addEventListener('click', showLevelSelectView);
   if (btnCloseChaptersModal) btnCloseChaptersModal.addEventListener('click', closeModals);
   if (btnCloseStory) btnCloseStory.addEventListener('click', closeModals);
+  if (btnCloseLockedModal) btnCloseLockedModal.addEventListener('click', closeModals);
 
   // Main Menu Continue Button
   if (btnMenuContinue) {

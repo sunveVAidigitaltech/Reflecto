@@ -88,17 +88,13 @@
          VIEW 1: MAIN MENU & 100-LEVEL BATCH SELECTION HUB
          ======================================================================= -->
     <section class="screen-view active" id="view-level-select">
-      <!-- Hero Welcome Banner -->
-      <div class="menu-hero-card">
-        <div class="menu-hero-left">
-          <div class="menu-hero-badge">🌟 Ready to sparkle?</div>
-          <h1 class="menu-hero-title">Reflecto Puzzles</h1>
-          <p class="menu-hero-sub">Solve each puzzle chamber to unlock the next level and collect all 300 stars!</p>
-        </div>
-        <button class="btn-menu-continue" id="btn-menu-continue" title="Resume your puzzle journey">
-          <span class="btn-play-icon">▶</span>
-          <span class="btn-play-label">Play Level <span id="menu-continue-lvl">1</span></span>
+      <!-- Clean Top Round Play Action & Title -->
+      <div class="menu-top-header">
+        <button class="btn-menu-continue-round" id="btn-menu-continue" title="Resume your puzzle journey">
+          <span class="btn-round-play-icon">▶</span>
+          <span class="btn-round-play-label">Play Level <span id="menu-continue-lvl">1</span></span>
         </button>
+        <h1 class="menu-main-title">Reflecto Puzzles</h1>
       </div>
 
       <!-- Batch Filter & Series Tabs -->
@@ -363,6 +359,24 @@
           <button class="btn-next-pill" id="btn-next-chamber">Next Level &rarr;</button>
         </div>
         <button class="btn-choose-level-pill" id="btn-menu-chambers">📋 Choose Level</button>
+      </div>
+    </div>
+
+    <!-- THEMED LOCKED LEVEL MODAL -->
+    <div class="modal-overlay" id="locked-level-modal" role="dialog" aria-modal="true" aria-labelledby="locked-modal-title">
+      <div class="locked-card">
+        <div class="locked-avatar-wobble">🔒</div>
+        <h2 class="locked-card-title" id="locked-modal-title">Level 10 is Locked!</h2>
+        <div class="locked-speech-bubble" id="locked-modal-msg">
+          Complete <strong>Level 6</strong> first to unlock this puzzle chamber and discover its light secrets!
+        </div>
+        <div class="locked-action-row">
+          <button class="btn-locked-dismiss" id="btn-close-locked-modal">Got It</button>
+          <button class="btn-locked-play-next" id="btn-locked-play-next">
+            <span class="btn-play-icon">▶</span>
+            <span>Play Level <span id="locked-next-lvl-num">6</span></span>
+          </button>
+        </div>
       </div>
     </div>
 
