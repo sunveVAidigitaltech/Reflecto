@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'io.reflecto.game'
+    namespace 'com.vaidigitaltech.reflecto'
     compileSdk 35
 
     defaultConfig {
-        applicationId "io.reflecto.game"
+        applicationId "com.vaidigitaltech.reflecto"
         minSdk 24
         targetSdk 35
         versionCode 1

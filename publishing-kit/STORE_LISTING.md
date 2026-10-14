@@ -12,6 +12,11 @@ This document contains the official metadata and store listing copy for **Reflec
   ```
   *(Character count: 28 / 30)*
 
+* **Package Name (Application ID)**:
+  ```text
+  com.vaidigitaltech.reflecto
+  ```
+
 * **Short Description** *(Max 80 characters)*:
   ```text
   Guide glowing lasers with mirrors & prisms across 100 fun chamber puzzles!

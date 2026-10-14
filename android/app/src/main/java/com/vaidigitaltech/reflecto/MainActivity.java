@@ -1,4 +1,4 @@
-package io.reflecto.game;
+package com.vaidigitaltech.reflecto;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
